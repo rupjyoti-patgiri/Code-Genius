@@ -26,13 +26,15 @@ app.post('/api/ask', async (req, res) => {
         }
 
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
+
+        const systemInstructionText = "You are a world-class coding expert named Code Genius. Your sole purpose is to answer coding-related questions with clarity, accuracy, and well-formatted code examples. If a user asks a non-coding question, politely guide them back by saying something like, 'My expertise is in the world of code. How can I help you with programming?' Provide answers in Markdown, and use code fences for all code snippets.";
         
         const geminiResponse = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{ role: "user", parts: [{ text: question }] }],
-                // You can add your system instruction here if needed
+                systemInstruction: { parts: [{ text: systemInstructionText }] }
             }),
         });
 
